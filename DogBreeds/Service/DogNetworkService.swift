@@ -25,7 +25,11 @@ final class DogNetworkService: DogService {
     }
 
     func getListOfBreeds(_ completion: @escaping (Result<[DogBreed]>) -> Void) {
+        NetworkActivityIndicator.shared.showIndicator()
+
         URLSession.shared.dataTask(with: Endpoint.listAllBreeds) { data, response, error in
+            NetworkActivityIndicator.shared.hideIndicator()
+
             switch self.checkForErrorsIn(data: data, response: response, error: error) {
             case .success(let data):
                 do {
@@ -35,18 +39,59 @@ final class DogNetworkService: DogService {
                     print("Unable to decode data from response: \(String(describing: response))\n\(error)")
                     completion(.failure(ApplicationError.decoding))
                 }
-
             case .failure(let error): completion(.failure(error))
             }
         }.resume()
     }
 
-    func getImageURLs(of breed: DogBreed, completion: @escaping (Result<[String]>) -> Void) {
+    func getImageURLs(of breed: DogBreed, completion: @escaping (Result<[URL]>) -> Void) {
+        guard let url = Endpoint.imagesByBreed(breed) else {
+            completion(.failure(ApplicationError.malformedURL))
+            return
+        }
 
+        NetworkActivityIndicator.shared.showIndicator()
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            NetworkActivityIndicator.shared.hideIndicator()
+
+            switch self.checkForErrorsIn(data: data, response: response, error: error) {
+            case .success(let data):
+                do {
+                    let imageList = try JSONDecoder().decode(ImageURLList.self, from: data)
+                    completion(.success(imageList.imageURLs))
+                } catch {
+                    print("Unable to decode data from response: \(String(describing: response))\n\(error)")
+                    completion(.failure(ApplicationError.decoding))
+                }
+            case .failure(let error): completion(.failure(error))
+            }
+        }.resume()
     }
 
-    func getImageURLs(of subBreed: DogBreed.SubBreed, completion: @escaping (Result<[String]>) -> Void) {
+    func getImageURLs(of subBreed: DogBreed.SubBreed, completion: @escaping (Result<[URL]>) -> Void) {
+        guard let url = Endpoint.imagesBySubBreed(subBreed) else {
+            completion(.failure(ApplicationError.malformedURL))
+            return
+        }
 
+        NetworkActivityIndicator.shared.showIndicator()
+
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            NetworkActivityIndicator.shared.hideIndicator()
+            
+            switch self.checkForErrorsIn(data: data, response: response, error: error) {
+            case .success(let data):
+                do {
+                    let imageList = try JSONDecoder().decode(ImageURLList.self, from: data)
+                    completion(.success(imageList.imageURLs))
+                } catch {
+                    print("Unable to decode data from response: \(String(describing: response))\n\(error)")
+                    completion(.failure(ApplicationError.decoding))
+                }
+            case .failure(let error): completion(.failure(error))
+            }
+        }.resume()
     }
 
 }

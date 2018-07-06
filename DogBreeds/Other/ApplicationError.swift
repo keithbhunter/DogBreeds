@@ -21,6 +21,9 @@ struct ApplicationError: LocalizedError {
 }
 
 extension ApplicationError {
+
     static let unknown = ApplicationError(description: LocalizedString("Something went wrong. Please, try again."))
     static let decoding = ApplicationError(description: LocalizedString("Unable to decode data. Please, file a bug report."))
+    static let malformedURL = ApplicationError(description: LocalizedString("Unexpected dog breed. Cannot fetch data for this breed."))
+
 }

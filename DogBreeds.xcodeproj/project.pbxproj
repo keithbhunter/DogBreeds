@@ -21,6 +21,10 @@
 		FB06198320EFF52900B01E31 /* DogBreedList.json in Resources */ = {isa = PBXBuildFile; fileRef = FB06198220EFF52900B01E31 /* DogBreedList.json */; };
 		FB06198520EFF9BA00B01E31 /* ServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB06198420EFF9BA00B01E31 /* ServiceError.swift */; };
 		FB06198720EFFA8D00B01E31 /* DogServiceParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB06198620EFFA8D00B01E31 /* DogServiceParsingTests.swift */; };
+		FB06198920F001EB00B01E31 /* ImageURLList.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB06198820F001EB00B01E31 /* ImageURLList.swift */; };
+		FB06198B20F0043900B01E31 /* NetworkActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB06198A20F0043900B01E31 /* NetworkActivityIndicator.swift */; };
+		FB06198F20F004DF00B01E31 /* ImageURLListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB06198E20F004DF00B01E31 /* ImageURLListTests.swift */; };
+		FB06199120F0052200B01E31 /* ImageURLList.json in Resources */ = {isa = PBXBuildFile; fileRef = FB06199020F0052200B01E31 /* ImageURLList.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +56,10 @@
 		FB06198220EFF52900B01E31 /* DogBreedList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DogBreedList.json; sourceTree = "<group>"; };
 		FB06198420EFF9BA00B01E31 /* ServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceError.swift; sourceTree = "<group>"; };
 		FB06198620EFFA8D00B01E31 /* DogServiceParsingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogServiceParsingTests.swift; sourceTree = "<group>"; };
+		FB06198820F001EB00B01E31 /* ImageURLList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageURLList.swift; sourceTree = "<group>"; };
+		FB06198A20F0043900B01E31 /* NetworkActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkActivityIndicator.swift; sourceTree = "<group>"; };
+		FB06198E20F004DF00B01E31 /* ImageURLListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageURLListTests.swift; sourceTree = "<group>"; };
+		FB06199020F0052200B01E31 /* ImageURLList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ImageURLList.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +119,7 @@
 				FB06197F20EFF42700B01E31 /* JSON */,
 				FB06198020EFF43B00B01E31 /* BreedListParsingTests.swift */,
 				FB06198620EFFA8D00B01E31 /* DogServiceParsingTests.swift */,
+				FB06198E20F004DF00B01E31 /* ImageURLListTests.swift */,
 				FB06196520EFCBA300B01E31 /* Info.plist */,
 			);
 			path = DogBreedsTests;
@@ -121,6 +130,7 @@
 			children = (
 				FB06196F20EFCC5800B01E31 /* DogBreed.swift */,
 				FB06197B20EFF3C200B01E31 /* DogBreedList.swift */,
+				FB06198820F001EB00B01E31 /* ImageURLList.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -131,6 +141,7 @@
 				FB06197220EFDABB00B01E31 /* ApplicationError.swift */,
 				FB06198420EFF9BA00B01E31 /* ServiceError.swift */,
 				FB06197420EFF20A00B01E31 /* DynamicCodingKey.swift */,
+				FB06198A20F0043900B01E31 /* NetworkActivityIndicator.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -148,6 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				FB06198220EFF52900B01E31 /* DogBreedList.json */,
+				FB06199020F0052200B01E31 /* ImageURLList.json */,
 			);
 			path = JSON;
 			sourceTree = "<group>";
@@ -243,6 +255,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB06198320EFF52900B01E31 /* DogBreedList.json in Resources */,
+				FB06199120F0052200B01E31 /* ImageURLList.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -254,6 +267,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB06197020EFCC5800B01E31 /* DogBreed.swift in Sources */,
+				FB06198B20F0043900B01E31 /* NetworkActivityIndicator.swift in Sources */,
 				FB06195120EFCBA200B01E31 /* ViewController.swift in Sources */,
 				FB06197A20EFF34100B01E31 /* DogNetworkService.swift in Sources */,
 				FB06197820EFF2FD00B01E31 /* DogService.swift in Sources */,
@@ -262,6 +276,7 @@
 				FB06198520EFF9BA00B01E31 /* ServiceError.swift in Sources */,
 				FB06194F20EFCBA200B01E31 /* AppDelegate.swift in Sources */,
 				FB06197320EFDABB00B01E31 /* ApplicationError.swift in Sources */,
+				FB06198920F001EB00B01E31 /* ImageURLList.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,6 +284,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB06198F20F004DF00B01E31 /* ImageURLListTests.swift in Sources */,
 				FB06198720EFFA8D00B01E31 /* DogServiceParsingTests.swift in Sources */,
 				FB06198120EFF43B00B01E31 /* BreedListParsingTests.swift in Sources */,
 			);

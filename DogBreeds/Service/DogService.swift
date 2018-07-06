@@ -17,7 +17,9 @@ protocol DogService {
 
     func getListOfBreeds(_ completion: @escaping (Result<[DogBreed]>) -> Void)
     func getImageURLs(of breed: DogBreed, completion: @escaping (Result<[URL]>) -> Void)
+    func getRandomImageURL(of breed: DogBreed, completion: @escaping (Result<URL>) -> Void)
     func getImageURLs(of subBreed: DogBreed.SubBreed, completion: @escaping (Result<[URL]>) -> Void)
+    func getRandomImageURL(of subBreed: DogBreed.SubBreed, completion: @escaping (Result<URL>) -> Void)
 
 }
 

@@ -10,7 +10,7 @@ import UIKit
 
 final class DogBreedOverviewTableCell: UITableViewCell {
 
-    private struct LayoutAttributes {
+    struct LayoutAttributes {
         static let outerHorizontalMargin: CGFloat = 20
         static let outerVerticalMargin: CGFloat = 5
         static let innerMargin: CGFloat = 16
@@ -49,7 +49,7 @@ final class DogBreedOverviewTableCell: UITableViewCell {
         breedImageView.widthAnchor.constraint(equalToConstant: LayoutAttributes.imageSize.width).isActive = true
 
         let heightConstraint = breedImageView.heightAnchor.constraint(equalToConstant: LayoutAttributes.imageSize.height)
-        heightConstraint.priority = UILayoutPriority(rawValue: UILayoutPriority.defaultLow.rawValue - 1)
+        heightConstraint.priority = UILayoutPriority(rawValue: UILayoutPriority.required.rawValue - 1)
         heightConstraint.isActive = true
 
         setupLabels()
@@ -91,9 +91,7 @@ final class DogBreedOverviewTableCell: UITableViewCell {
 
         let subBreedNames = breed.subBreeds.map { $0.name }
         if !subBreedNames.isEmpty {
-            let subBreeds = subBreedNames.joined(separator: ", ")
-            let subBreedsFormat = LocalizedString("Subbreeds: %@")
-            subBreedNameLabel.text = String(format: subBreedsFormat, subBreeds)
+            subBreedNameLabel.text = subBreedNames.joined(separator: ", ")
         }
     }
 
@@ -127,14 +125,16 @@ final class DogBreedOverviewTableCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = ColorPallet.blackText
         label.numberOfLines = 0
+        label.font = UIFont.systemFont(ofSize: 15)
         return label
     }()
 
     let subBreedNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .gray
+        label.textColor = .lightGray
         label.numberOfLines = 0
+        label.font = UIFont.systemFont(ofSize: 13)
         return label
     }()
 

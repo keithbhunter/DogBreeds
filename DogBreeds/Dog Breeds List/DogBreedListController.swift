@@ -16,6 +16,8 @@ final class DogBreedListController: UIViewController {
 
     private let service: DogService
     private var fetchDogBreedsTask = UIBackgroundTaskInvalid
+    private var imageCache = NSCache<NSIndexPath, UIImage>()
+    private var imageDownloads = Set<IndexPath>()
 
 
     // MARK: - Init
@@ -73,14 +75,48 @@ final class DogBreedListController: UIViewController {
         }
     }
 
+    func fetchImage(forCell cell: DogBreedOverviewTableCell, at indexPath: IndexPath) {
+        // Don't kick off multiple downloads for the same index path.
+        guard !imageDownloads.contains(indexPath) else { return }
+        imageDownloads.insert(indexPath)
+
+        service.getRandomImage(of: breeds[indexPath.row]) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let image, let isFromCache):
+                    self?.imageCache.setObject(image, forKey: indexPath as NSIndexPath)
+
+                    if isFromCache {
+                        cell.breedImageView.setImage(image)
+                    } else if let cell = self?.tableView.cellForRow(at: indexPath) as? DogBreedOverviewTableCell {
+                        cell.breedImageView.setImage(image, animated: true)
+                    }
+                case .failure:
+                    let noImage = #imageLiteral(resourceName: "no-dog")
+                    self?.imageCache.setObject(noImage, forKey: indexPath as NSIndexPath)
+
+                    if let cell = self?.tableView.cellForRow(at: indexPath) as? DogBreedOverviewTableCell {
+                        cell.breedImageView.setImage(noImage, animated: true)
+                    }
+                }
+
+                self?.imageDownloads.remove(indexPath)
+            }
+        }
+    }
+
 
     // MARK: - Views
 
     private lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .plain)
         table.translatesAutoresizingMaskIntoConstraints = false
+        table.backgroundColor = .clear
         table.separatorColor = .clear
         table.estimatedRowHeight = 130
+
+        let verticalInset = DogBreedOverviewTableCell.LayoutAttributes.outerHorizontalMargin - DogBreedOverviewTableCell.LayoutAttributes.outerVerticalMargin
+        table.contentInset = UIEdgeInsets(top: verticalInset, left: 0, bottom: verticalInset, right: 0)
 
         table.dataSource = self
         table.register(DogBreedOverviewTableCell.self, forCellReuseIdentifier: String(describing: DogBreedOverviewTableCell.self))
@@ -99,6 +135,13 @@ extension DogBreedListController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: DogBreedOverviewTableCell.self), for: indexPath) as! DogBreedOverviewTableCell
         cell.bind(breeds[indexPath.row])
+
+        if let image = imageCache.object(forKey: indexPath as NSIndexPath) {
+            cell.breedImageView.setImage(image, animated: false)
+        } else {
+            fetchImage(forCell: cell, at: indexPath)
+        }
+
         return cell
     }
 

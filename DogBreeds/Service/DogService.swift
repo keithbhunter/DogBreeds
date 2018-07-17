@@ -6,7 +6,7 @@
 //  Copyright © 2018 Keith Hunter. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 enum Result<T> {
     case success(T)
@@ -17,9 +17,9 @@ protocol DogService {
 
     func getListOfBreeds(_ completion: @escaping (Result<[DogBreed]>) -> Void)
     func getImageURLs(of breed: DogBreed, completion: @escaping (Result<[URL]>) -> Void)
-    func getRandomImageURL(of breed: DogBreed, completion: @escaping (Result<URL>) -> Void)
+    func getRandomImage(of breed: DogBreed, completion: @escaping (Result<(UIImage, Bool)>) -> Void)
     func getImageURLs(of subBreed: DogBreed.SubBreed, completion: @escaping (Result<[URL]>) -> Void)
-    func getRandomImageURL(of subBreed: DogBreed.SubBreed, completion: @escaping (Result<URL>) -> Void)
+    func getRandomImage(of subBreed: DogBreed.SubBreed, completion: @escaping (Result<(UIImage, Bool)>) -> Void)
 
 }
 

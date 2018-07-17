@@ -28,8 +28,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.backgroundColor = .black
-        window.rootViewController = ViewController(service: DogNetworkService())
+        window.rootViewController = UINavigationController(rootViewController: DogBreedListController(service: DogNetworkService()))
         window.makeKeyAndVisible()
+        self.window = window
 
         return true
     }

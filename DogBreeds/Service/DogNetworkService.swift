@@ -43,7 +43,7 @@ final class DogNetworkService: DogService {
     func getListOfBreeds(_ completion: @escaping (Result<[DogBreed]>) -> Void) {
         NetworkActivityIndicator.shared.showIndicator()
 
-        URLSession.shared.dataTask(with: Endpoint.listAllBreeds) { [weak self] data, response, error in
+        URLSession.shared.dataTask(with: Endpoint.listAllBreeds) { [weak self] data, response, error in            
             guard let strongSelf = self else { return }
             NetworkActivityIndicator.shared.hideIndicator()
 

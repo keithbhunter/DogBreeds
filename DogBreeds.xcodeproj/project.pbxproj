@@ -32,6 +32,8 @@
 		FB49301720FD6CA10026CEC6 /* DogBreedListControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB49301620FD6CA10026CEC6 /* DogBreedListControllerTests.swift */; };
 		FB49301920FD6D2B0026CEC6 /* MockDogService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB49301820FD6D2B0026CEC6 /* MockDogService.swift */; };
 		FB49301B20FD7D200026CEC6 /* UIImageView+DogBreeds.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB49301A20FD7D200026CEC6 /* UIImageView+DogBreeds.swift */; };
+		FBF8B69E20FECB64001CF6F4 /* Array+DogBreeds.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF8B69D20FECB64001CF6F4 /* Array+DogBreeds.swift */; };
+		FBF8B6A020FED299001CF6F4 /* String+DogBreeds.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF8B69F20FED299001CF6F4 /* String+DogBreeds.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +76,8 @@
 		FB49301620FD6CA10026CEC6 /* DogBreedListControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogBreedListControllerTests.swift; sourceTree = "<group>"; };
 		FB49301820FD6D2B0026CEC6 /* MockDogService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDogService.swift; sourceTree = "<group>"; };
 		FB49301A20FD7D200026CEC6 /* UIImageView+DogBreeds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+DogBreeds.swift"; sourceTree = "<group>"; };
+		FBF8B69D20FECB64001CF6F4 /* Array+DogBreeds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+DogBreeds.swift"; sourceTree = "<group>"; };
+		FBF8B69F20FED299001CF6F4 /* String+DogBreeds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+DogBreeds.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +166,8 @@
 				FB06198A20F0043900B01E31 /* NetworkActivityIndicator.swift */,
 				FB06199920F0118800B01E31 /* ColorPallet.swift */,
 				FB49301A20FD7D200026CEC6 /* UIImageView+DogBreeds.swift */,
+				FBF8B69D20FECB64001CF6F4 /* Array+DogBreeds.swift */,
+				FBF8B69F20FED299001CF6F4 /* String+DogBreeds.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -297,9 +303,11 @@
 			files = (
 				FB06197020EFCC5800B01E31 /* DogBreed.swift in Sources */,
 				FB06198B20F0043900B01E31 /* NetworkActivityIndicator.swift in Sources */,
+				FBF8B69E20FECB64001CF6F4 /* Array+DogBreeds.swift in Sources */,
 				FB06197A20EFF34100B01E31 /* DogNetworkService.swift in Sources */,
 				FB06199320F00A4400B01E31 /* SingleImageResponse.swift in Sources */,
 				FB06197820EFF2FD00B01E31 /* DogService.swift in Sources */,
+				FBF8B6A020FED299001CF6F4 /* String+DogBreeds.swift in Sources */,
 				FB06197520EFF20A00B01E31 /* DynamicCodingKey.swift in Sources */,
 				FB06197C20EFF3C200B01E31 /* DogBreedList.swift in Sources */,
 				FB06199C20F0134A00B01E31 /* DogBreedListController.swift in Sources */,

@@ -18,7 +18,11 @@ struct ImageURLList: Decodable {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        imageURLs = try container.decode([String].self, forKey: .message).compactMap { URL(string: $0) }
+        
+        imageURLs = try container.decode([String].self, forKey: .message).compactMap {
+            guard let urlString = $0.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return nil }
+            return URL(string: urlString)
+        }
     }
 
 }

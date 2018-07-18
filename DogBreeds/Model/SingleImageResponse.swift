@@ -18,12 +18,13 @@ struct SingleImageResponse: Decodable {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let imageURLString = try container.decode(String.self, forKey: .message)
+        let imageURLString = try container.decode(String.self, forKey: .message).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
 
-        if let imageURL = URL(string: imageURLString) {
+        if let string = imageURLString, let imageURL = URL(string: string) {
             self.imageURL = imageURL
         } else {
-            throw DecodingError.dataCorruptedError(forKey: .message, in: container, debugDescription: "Image URL string was not a valid URL: \(imageURLString)")
+            throw DecodingError.dataCorruptedError(forKey: .message, in: container,
+                                                   debugDescription: "Image URL string was not a valid URL: \(String(describing: imageURLString))")
         }
     }
 

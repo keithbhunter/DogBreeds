@@ -31,7 +31,8 @@ final class DogBreedOverviewTableCell: UITableViewCell {
     }
 
     private func setup() {
-        backgroundColor = ColorPallet.lightGrayBackground
+        backgroundColor = .clear
+        selectionStyle = .none
 
         contentView.addSubview(containerView)
         containerView.addSubview(breedImageView)
@@ -76,6 +77,9 @@ final class DogBreedOverviewTableCell: UITableViewCell {
         subBreedNameLabel.bottomAnchor.constraint(equalTo: belowLabelGuide.topAnchor).isActive = true
     }
 
+
+    // MARK: - Overrides
+
     override func prepareForReuse() {
         super.prepareForReuse()
         breedImageView.image = nil
@@ -83,11 +87,23 @@ final class DogBreedOverviewTableCell: UITableViewCell {
         subBreedNameLabel.text = nil
     }
 
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        let duration = animated ? 0.25 : 0
+
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: duration, delay: 0, options: [], animations: {
+            if highlighted {
+                self.containerView.backgroundColor = UIColor.white.withAlphaComponent(0.5)
+            } else {
+                self.containerView.backgroundColor = .white
+            }
+        }, completion: nil)
+    }
+
 
     // MARK: - Helpers
 
     func bind(_ breed: DogBreed) {
-        breedNameLabel.text = breed.name
+        breedNameLabel.text = breed.name.uppercased(with: Locale.current)
 
         let subBreedNames = breed.subBreeds.map { $0.name }
         if !subBreedNames.isEmpty {
@@ -116,7 +132,8 @@ final class DogBreedOverviewTableCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = ColorPallet.imageViewBackground
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         return imageView
     }()
 
@@ -125,7 +142,7 @@ final class DogBreedOverviewTableCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = ColorPallet.blackText
         label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 15)
+        label.font = UIFont.systemFont(ofSize: 13)
         return label
     }()
 

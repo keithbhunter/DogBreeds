@@ -10,7 +10,7 @@ import UIKit
 
 final class DogBreedListController: UIViewController {
 
-    private(set) var breeds = [DogBreed]() {
+    private(set) var breeds = [[DogBreed]]() {
         didSet { tableView.reloadData() }
     }
 
@@ -37,6 +37,9 @@ final class DogBreedListController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = ColorPallet.lightGrayBackground
+        title = LocalizedString("Dog Breeds")
+        navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationBar.isTranslucent = false
 
         view.addSubview(tableView)
         tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
@@ -50,6 +53,12 @@ final class DogBreedListController: UIViewController {
 
     // MARK: - Network
 
+    @objc private func refresh() {
+        imageCache.removeAllObjects()
+        imageDownloads.removeAll()
+        fetchDogBreeds()
+    }
+
     func fetchDogBreeds() {
         fetchDogBreedsTask = UIApplication.shared.beginBackgroundTask { [weak self] in
             guard let strongSelf = self else { return }
@@ -57,14 +66,18 @@ final class DogBreedListController: UIViewController {
             strongSelf.fetchDogBreedsTask = UIBackgroundTaskInvalid
         }
 
-        // TODO: Add loading animation
+        if !refreshControl.isRefreshing {
+            refreshControl.beginRefreshing()
+            tableView.setContentOffset(CGPoint(x: 0, y: -refreshControl.frame.size.height), animated: true)
+        }
 
         service.getListOfBreeds { [weak self] result in
             DispatchQueue.main.async {
+                self?.refreshControl.endRefreshing()
+
                 switch result {
-                case .success(let breeds): self?.breeds = breeds.sorted { $0.name < $1.name }
+                case .success(let breeds): self?.breeds = breeds.sorted().splitAlphabetically()
                 case .failure(let error):
-                    // TODO: Add error view.
                     print(error)
 
                     guard let strongSelf = self else { return }
@@ -80,7 +93,9 @@ final class DogBreedListController: UIViewController {
         guard !imageDownloads.contains(indexPath) else { return }
         imageDownloads.insert(indexPath)
 
-        service.getRandomImage(of: breeds[indexPath.row]) { [weak self] result in
+        let breed = breeds[indexPath.section][indexPath.row]
+
+        service.getRandomImage(of: breed) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let image, let isFromCache):
@@ -115,26 +130,37 @@ final class DogBreedListController: UIViewController {
         table.separatorColor = .clear
         table.estimatedRowHeight = 130
 
-        let verticalInset = DogBreedOverviewTableCell.LayoutAttributes.outerHorizontalMargin - DogBreedOverviewTableCell.LayoutAttributes.outerVerticalMargin
-        table.contentInset = UIEdgeInsets(top: verticalInset, left: 0, bottom: verticalInset, right: 0)
-
         table.dataSource = self
+        table.delegate = self
         table.register(DogBreedOverviewTableCell.self, forCellReuseIdentifier: String(describing: DogBreedOverviewTableCell.self))
 
+        table.addSubview(refreshControl)
+
         return table
+    }()
+
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        refreshControl.tintColor = .black
+        return refreshControl
     }()
 
 }
 
 extension DogBreedListController: UITableViewDataSource {
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return breeds.count
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return breeds[section].count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: DogBreedOverviewTableCell.self), for: indexPath) as! DogBreedOverviewTableCell
-        cell.bind(breeds[indexPath.row])
+        cell.bind(breeds[indexPath.section][indexPath.row])
 
         if let image = imageCache.object(forKey: indexPath as NSIndexPath) {
             cell.breedImageView.setImage(image, animated: false)
@@ -143,6 +169,30 @@ extension DogBreedListController: UITableViewDataSource {
         }
 
         return cell
+    }
+
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return String.sortedCapitalizedLetters
+    }
+
+    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        return String.sortedCapitalizedLetters.index(of: title) ?? 0
+    }
+
+}
+
+extension DogBreedListController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) as? DogBreedOverviewTableCell else { return }
+
+        cell.breedImageView.image = nil
+        fetchImage(forCell: cell, at: indexPath)
+    }
+
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        guard let breed = breeds[section].first else { return nil }
+        return String(breed.name[breed.name.startIndex]).uppercased()
     }
 
 }
